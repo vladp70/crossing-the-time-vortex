@@ -334,6 +334,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -408,13 +409,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.16, y: 1.37, z: -4.57}
+  m_LocalRotation: {x: 0.09190489, y: -0, z: -0, w: 0.9957678}
+  m_LocalPosition: {x: 0.052, y: 1.398, z: -1.253}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.546, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf247641e314af4cb88dfab3e9d678b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1528211546}
+  cameraOffset: {x: -0.09, y: -1.08, z: 1.79}
 --- !u!1001 &1528211539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -425,15 +440,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.19
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000009536743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
       propertyPath: m_LocalRotation.w
@@ -467,6 +482,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d5137a45ff9a6cf46bcd7f68ff888d30, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -480,6 +503,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1528211541}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1528211544}
   m_SourcePrefab: {fileID: 100100000, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
 --- !u!1 &1528211540 stripped
 GameObject:
@@ -516,7 +542,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528211540}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97c3c7ec3003526418f4b37037c9d53e, type: 3}
   m_Name: 
@@ -554,6 +580,29 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1528211544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528211540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203f4013f85389643a0e8d08fea4bddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 963194228}
+  moveSpeed: 3
+  rotSpeed: 5
+  jumpPower: 5
+  groundedThreshold: 0.15
+  minimumRespawnY: -50
+--- !u!4 &1528211546 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
+  m_PrefabInstance: {fileID: 1528211539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

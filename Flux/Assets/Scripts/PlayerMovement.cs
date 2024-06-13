@@ -15,14 +15,14 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
 
     Animator animator;
-    Rigidbody rb;
+    private Rigidbody rigidb;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        rigidb = GetComponent<Rigidbody>();
+        //rb.freezeRotation = true;
     }
 
     void FixedUpdate()
@@ -34,7 +34,12 @@ public class PlayerMovement : MonoBehaviour
     {
         MyInput();
         GetMoveDir();
-        Move();
+        UpdateAnimator();
+    }
+
+    private void OnAnimatorMove()
+    {
+        MovePlayer();
     }
 
     private void MyInput()
@@ -50,10 +55,18 @@ public class PlayerMovement : MonoBehaviour
         moveDir = horizontalInput * cameraRight_xOz + verticalInput * cameraFwd_xOz;
         moveDir = moveDir.normalized * Mathf.Max(Mathf.Abs(moveDir.x), Mathf.Abs(moveDir.z));
     }
+    
+    private void UpdateAnimator() {
+        Vector3 characterSpaceMoveDir = transform.InverseTransformVector(moveDir) * 1.2f;
+        animator.SetFloat("Forward", characterSpaceMoveDir.z);
+        animator.SetFloat("Right", characterSpaceMoveDir.x);
+        Debug.Log("Forward: " + characterSpaceMoveDir.z + " Right: " + characterSpaceMoveDir.x);
+    }
 
-    private void Move() {
-        float velY = GetComponent<Rigidbody>().velocity.y;
-        Vector3 newVel = moveDir * moveSpeed;
-        GetComponent<Rigidbody>().velocity = new Vector3(newVel.x, velY, newVel.z);
+    private void MovePlayer() {
+        float velY = rigidb.velocity.y;
+        //Vector3 newVel = moveDir * moveSpeed;
+        Vector3 newVel = animator.deltaPosition / Time.deltaTime * moveSpeed;
+        rigidb.velocity = new Vector3(newVel.x, velY, newVel.z);
     }
 }
