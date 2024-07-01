@@ -22,6 +22,6 @@ public class CameraCtrl : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
         transform.position = player.position - transform.TransformVector(cameraOffset);
-        //transform.position = player.position - transform.forward * distToPlayer;
+        // Earlier solution: transform.position = player.position - transform.forward * distToPlayer;
     }
 }

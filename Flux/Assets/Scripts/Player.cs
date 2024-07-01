@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public float minimumRespawnY = -50f;
     const float joystickActiveTolerance = 3f * 10e-3f;
 
+    public float dashSpeed = 5f;
+    public float dashTime = 1f;
+
     Vector3 initPos;
     Vector3 moveDir;
 
@@ -19,6 +22,8 @@ public class Player : MonoBehaviour
     Animator animator;
     CapsuleCollider capsule;
     bool isGrounded = true;
+    bool isDashing = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +37,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing) {
+            StartCoroutine(Dash());
+        }
+
         GetMoveDir();
 
         SetAnimatorMoveParams();
@@ -105,5 +114,33 @@ public class Player : MonoBehaviour
         //Vector3 newVel = moveDir * moveSpeed;
         Vector3 newVel = animator.deltaPosition / Time.deltaTime * moveSpeed;
         rigidbody.velocity = new Vector3(newVel.x, velY, newVel.z);
+    }
+
+    IEnumerator Dash() {
+        isDashing = true;
+        Vector3 startPosition = transform.position;
+        Vector3 dashDirection = transform.forward;
+        Vector3 endPosition = startPosition + dashDirection * dashSpeed;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < dashTime) {
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / dashTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = endPosition;
+        isDashing = false;
+    }
+
+    private void onCollisionEnter(Collision collision) {
+    //     if (collision.gameObject.tag == "healthPotion") {
+    //         increaseHealth();
+    //         Destroy(collision.gameObject);
+    //     } else if (collision.gameObject.tag == "manaPotion") {
+    //         increaseMana();
+    //         Destroy(collision.gameObject);
+    //     } else if (collision.gameObject.tag == "enemy") {
+    //         handleEnemyCollision();
+    //     }
     }
 }

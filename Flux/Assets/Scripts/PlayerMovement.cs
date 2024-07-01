@@ -69,4 +69,5 @@ public class PlayerMovement : MonoBehaviour
         Vector3 newVel = animator.deltaPosition / Time.deltaTime * moveSpeed;
         rigidb.velocity = new Vector3(newVel.x, velY, newVel.z);
     }
+
 }
