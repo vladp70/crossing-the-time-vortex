@@ -78,7 +78,6 @@ public class Player : MonoBehaviour
                 }
                 transform.position = playerStates[playerStates.Count - 1].Position;
                 transform.rotation = playerStates[playerStates.Count - 1].Rotation;
-                //transform.position = (Vector3) playerPositions[playerPositions.Count - 1];
                 playerStates.RemoveAt(playerStates.Count - 1);
             } else {
                 transform.position = Vector3.Lerp(playerStates[playerStates.Count - 1].Position, transform.position, frameCounter / 5f);
@@ -98,7 +97,7 @@ public class Player : MonoBehaviour
             StartCoroutine(FreezeEnemies());
         }
 
-        if(Input.GetKey(KeyCode.R))
+        if(Input.GetKey(KeyCode.R) && playerStates.Count > 10)
         {
             isReversing = true;
         }
@@ -128,6 +127,7 @@ public class Player : MonoBehaviour
         Vector3 characterSpaceMoveDir = transform.InverseTransformVector(moveDir) * 1.2f;
         animator.SetFloat("Forward", characterSpaceMoveDir.z);
         animator.SetFloat("Right", characterSpaceMoveDir.x);
+        animator.SetBool("Reversing", isReversing);
     }
 
     private void HandleJump()
@@ -164,6 +164,12 @@ public class Player : MonoBehaviour
 
     private void GetMoveDir()
     {
+        if (isReversing) {
+            //moveDir = (transform.position - playerStates[playerStates.Count - 1].Position).normalized;
+            if (playerStates.Count >= 2)
+                moveDir = (playerStates[playerStates.Count - 1].Position - playerStates[playerStates.Count - 2].Position).normalized;
+            return;
+        }
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 cameraFwd_xOz = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
