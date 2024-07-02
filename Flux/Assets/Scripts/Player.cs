@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
     IEnumerator Dash() {
         isDashing = true;
         Vector3 startPosition = transform.position;
-        Vector3 dashDirection = transform.forward;
+        Vector3 dashDirection = moveDir.normalized;
         Vector3 endPosition = startPosition + dashDirection * dashSpeed;
 
         float elapsedTime = 0f;

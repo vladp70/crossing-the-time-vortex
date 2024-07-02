@@ -990,9 +990,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!114 &1528211544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,11 +1006,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 963194228}
-  moveSpeed: 3
+  moveSpeed: 1.5
   rotSpeed: 5
-  jumpPower: 5
+  jumpPower: 4
   groundedThreshold: 0.15
   minimumRespawnY: -50
+  dashSpeed: 5
+  dashTime: 0.15
 --- !u!4 &1528211546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1733ff8c34ca3784db27ebcb4a6b5657, type: 3}
