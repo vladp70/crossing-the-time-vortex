@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public float dashTime = 1f;
     public float mana = 50f;
     public float dashManaCost = 5f;
+    public float freezeTime = 3f;
 
     Vector3 initPos;
     Vector3 moveDir;
@@ -46,6 +47,10 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing) {
             StartCoroutine(Dash());
+        }
+
+        if (Input.GetMouseButtonDown(0)) {
+            StartCoroutine(FreezeEnemies());
         }
 
         UpdateMana();
@@ -148,6 +153,16 @@ public class Player : MonoBehaviour
         transform.position = endPosition;
         isDashing = false;
         mana -= dashManaCost;
+    }
+
+    IEnumerator FreezeEnemies() {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        foreach (GameObject enemy in enemies) {
+            Debug.Log("freezing enemy");
+            enemy.GetComponent<Enemy>().getFrozen(freezeTime);
+        }
+
+        yield return null;
     }
 
     void OnTriggerEnter(Collider collision) {
