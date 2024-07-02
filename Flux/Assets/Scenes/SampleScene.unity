@@ -1965,6 +1965,7 @@ MonoBehaviour:
   dashTime: 0.15
   mana: 50
   dashManaCost: 5
+  freezeManaCost: 5
   freezeTime: 3
 --- !u!4 &1528211546 stripped
 Transform:
