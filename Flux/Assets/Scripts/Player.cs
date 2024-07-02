@@ -150,27 +150,14 @@ public class Player : MonoBehaviour
         mana -= dashManaCost;
     }
 
-    void onTriggerEnter(Collision collision) {
-        print("Collision detected!");
-        Debug.Log("Collision " + collision.gameObject.tag + " detected!");
-        
+    void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.tag == "Mana") {
             increaseMana();
             Destroy(collision.gameObject);
         }
-    //     } else if (collision.gameObject.tag == "enemy") {
-    //         handleEnemyCollision();
-    //     }
     }
 
-    void onCollisionEnter(Collision collision) {
-        print("Collision detected!");
-        Debug.Log("Collision " + collision.gameObject.tag + " detected!");
-        
-        if (collision.gameObject.tag == "Mana") {
-            increaseMana();
-            Destroy(collision.gameObject);
-        }
+    void OnCollisionEnter(Collision collision) {
     //     } else if (collision.gameObject.tag == "enemy") {
     //         handleEnemyCollision();
     //     }
