@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class Player : MonoBehaviour
     public float groundedThreshold = .15f;
     public float minimumRespawnY = -50f;
     const float joystickActiveTolerance = 3f * 10e-3f;
+    public GameObject manaBar;
 
     public float dashSpeed = 5f;
     public float dashTime = 1f;
+    public float mana = 50f;
+    public float dashManaCost = 5f;
 
     Vector3 initPos;
     Vector3 moveDir;
+    TextMeshProUGUI manaText;
 
     Rigidbody rigidbody;
     Animator animator;
@@ -32,6 +37,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         capsule = GetComponent<CapsuleCollider>();
         initPos = transform.position;
+        manaText = manaBar.GetComponent<TextMeshProUGUI>();
+        manaText.text = mana.ToString();
     }
 
     // Update is called once per frame
@@ -40,6 +47,8 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing) {
             StartCoroutine(Dash());
         }
+
+        UpdateMana();
 
         GetMoveDir();
 
@@ -116,6 +125,14 @@ public class Player : MonoBehaviour
         rigidbody.velocity = new Vector3(newVel.x, velY, newVel.z);
     }
 
+    private void UpdateMana() {
+        manaText.text = mana.ToString();
+    }
+
+    private void increaseMana() {
+        mana += 25;
+    }
+
     IEnumerator Dash() {
         isDashing = true;
         Vector3 startPosition = transform.position;
@@ -130,15 +147,30 @@ public class Player : MonoBehaviour
         }
         transform.position = endPosition;
         isDashing = false;
+        mana -= dashManaCost;
     }
 
-    private void onCollisionEnter(Collision collision) {
-    //     if (collision.gameObject.tag == "healthPotion") {
-    //         increaseHealth();
-    //         Destroy(collision.gameObject);
-    //     } else if (collision.gameObject.tag == "manaPotion") {
-    //         increaseMana();
-    //         Destroy(collision.gameObject);
+    void onTriggerEnter(Collision collision) {
+        print("Collision detected!");
+        Debug.Log("Collision " + collision.gameObject.tag + " detected!");
+        
+        if (collision.gameObject.tag == "Mana") {
+            increaseMana();
+            Destroy(collision.gameObject);
+        }
+    //     } else if (collision.gameObject.tag == "enemy") {
+    //         handleEnemyCollision();
+    //     }
+    }
+
+    void onCollisionEnter(Collision collision) {
+        print("Collision detected!");
+        Debug.Log("Collision " + collision.gameObject.tag + " detected!");
+        
+        if (collision.gameObject.tag == "Mana") {
+            increaseMana();
+            Destroy(collision.gameObject);
+        }
     //     } else if (collision.gameObject.tag == "enemy") {
     //         handleEnemyCollision();
     //     }
