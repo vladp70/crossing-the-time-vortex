@@ -39,8 +39,8 @@ public class Enemy : MonoBehaviour
         agent.isStopped = false;
         agent.velocity = agentVel;
         animator.speed = 1;
-        rigidbody.velocity = vel;
         rigidbody.isKinematic = false;
+        //rigidbody.velocity = vel;
         isFrozen = false;
     }
 

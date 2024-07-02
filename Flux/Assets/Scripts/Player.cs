@@ -18,7 +18,12 @@ public class Player : MonoBehaviour
     public float dashTime = 1f;
     public float mana = 50f;
     public float dashManaCost = 5f;
+    public float freezeManaCost = 5f;
     public float freezeTime = 3f;
+
+    List<PlayerState> playerStates;
+    bool isReversing = false;
+    float frameCounter = 0;
 
     Vector3 initPos;
     Vector3 moveDir;
@@ -40,6 +45,46 @@ public class Player : MonoBehaviour
         initPos = transform.position;
         manaText = manaBar.GetComponent<TextMeshProUGUI>();
         manaText.text = mana.ToString();
+        playerStates = new List<PlayerState>();
+    }
+
+    void FixedUpdate()
+    {
+        if (!isReversing)
+        {
+            frameCounter++;
+            if (frameCounter >= 5)
+            {
+                playerStates.Add(new PlayerState(transform.position, transform.rotation));
+                frameCounter = 0;
+
+                // Ensure we only store a maximum of 60 positions
+                if (playerStates.Count > 60)
+                {
+                    playerStates.RemoveAt(0);
+                }
+            }
+        }
+        else
+        {
+            frameCounter--;
+            if (frameCounter <= 0)
+            {
+                frameCounter = 5;
+
+                if (playerStates.Count <= 0) {
+                    isReversing = false;
+                    return;
+                }
+                transform.position = playerStates[playerStates.Count - 1].Position;
+                transform.rotation = playerStates[playerStates.Count - 1].Rotation;
+                //transform.position = (Vector3) playerPositions[playerPositions.Count - 1];
+                playerStates.RemoveAt(playerStates.Count - 1);
+            } else {
+                transform.position = Vector3.Lerp(playerStates[playerStates.Count - 1].Position, transform.position, frameCounter / 5f);
+                transform.rotation = Quaternion.Lerp(playerStates[playerStates.Count - 1].Rotation, transform.rotation, frameCounter / 5f);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -51,6 +96,15 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
             StartCoroutine(FreezeEnemies());
+        }
+
+        if(Input.GetKey(KeyCode.R))
+        {
+            isReversing = true;
+        }
+        else
+        {
+            isReversing = false;
         }
 
         UpdateMana();
@@ -156,6 +210,8 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator FreezeEnemies() {
+        mana -= freezeManaCost;
+        
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
         foreach (GameObject enemy in enemies) {
             Debug.Log("freezing enemy");
@@ -176,5 +232,17 @@ public class Player : MonoBehaviour
     //     } else if (collision.gameObject.tag == "enemy") {
     //         handleEnemyCollision();
     //     }
+    }
+
+    private struct PlayerState
+    {
+        public Vector3 Position { get; }
+        public Quaternion Rotation { get; }
+
+        public PlayerState(Vector3 position, Quaternion rotation)
+        {
+            Position = position;
+            Rotation = rotation;
+        }
     }
 }
