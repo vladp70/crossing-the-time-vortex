@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     List<PlayerState> playerStates;
     bool isReversing = false;
     float frameCounter = 0;
+    bool isWounded = false;
 
     Vector3 initPos;
     Vector3 moveDir;
@@ -95,6 +96,10 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
             StartCoroutine(FreezeEnemies());
+        }
+
+        if (Input.GetKeyDown(KeyCode.E)) {
+            animator.SetTrigger("Attack");
         }
 
         if(Input.GetKey(KeyCode.R) && playerStates.Count > 10)
@@ -198,6 +203,10 @@ public class Player : MonoBehaviour
         mana += 25;
     }
 
+    private void increaseHealth() {
+        isWounded = false;
+    }
+
     IEnumerator Dash() {
         isDashing = true;
         Vector3 startPosition = transform.position;
@@ -230,6 +239,10 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.tag == "Mana") {
             increaseMana();
+            Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.tag == "Health") {
+            increaseHealth();
             Destroy(collision.gameObject);
         }
     }

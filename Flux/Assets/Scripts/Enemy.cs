@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public NavMeshAgent agent;
+    public float attackRange = 2f;
+    public float rotSpeed = 5f;
     
     Animator animator;
     Rigidbody rigidbody;
@@ -49,8 +51,26 @@ public class Enemy : MonoBehaviour
     {
         if (!isFrozen)
         {
-            agent.SetDestination(GameObject.Find("Player").transform.position);
+            Vector3 playerPos = GameObject.Find("Player").transform.position;
+
+            agent.SetDestination(playerPos);
             animator.SetFloat("Forward", agent.velocity.magnitude);
+
+            if (Vector3.Distance(transform.position, playerPos) < attackRange)
+            {
+                //ApplyRootRotationTo(playerPos);
+                rigidbody.velocity = Vector3.zero;
+                agent.velocity = Vector3.zero;
+                animator.SetTrigger("Attack");
+            }
         }
+    }
+
+    private void ApplyRootRotationTo(Vector3 position)
+    {
+        Vector3 lookDir = position - transform.position;
+        Quaternion targetRot = Quaternion.LookRotation(lookDir, Vector3.up);
+        float rotSlerpFactor = Mathf.Clamp01(rotSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotSlerpFactor);
     }
 }
