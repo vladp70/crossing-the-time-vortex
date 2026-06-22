@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Mana
   - enemy
+  - Health
+  - Floor
+  - Weapon
+  - Time
+  - Scroll
   layers:
   - Default
   - TransparentFX

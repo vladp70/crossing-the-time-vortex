@@ -1,0 +1,29 @@
+{
+    "Flux": {
+        "checkpoints": [
+            {
+                "steps": 27025,
+                "file_path": "results\\ppo\\Flux\\Flux-27025.onnx",
+                "reward": 0.0,
+                "creation_time": 1748277620.5284433,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Flux\\Flux-27025.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 27025,
+            "file_path": "results\\ppo\\Flux.onnx",
+            "reward": 0.0,
+            "creation_time": 1748277620.5284433,
+            "auxillary_file_paths": [
+                "results\\ppo\\Flux\\Flux-27025.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}

@@ -49,6 +49,22 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            float randomVal = Random.Range(0, 1);
+            if (randomVal < 0.3f)
+            {
+                GameObject.FindGameObjectWithTag("Weapon").GetComponent<MeshRenderer>().enabled = true;
+            }
+            else if (randomVal < 0.6f)
+            {
+                GameObject.FindGameObjectWithTag("Scroll").GetComponent<MeshRenderer>().enabled = true;
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("Time").GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
         if (!isFrozen)
         {
             Vector3 playerPos = GameObject.Find("Player").transform.position;
